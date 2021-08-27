@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+	<head>
+		<title>FewNLU</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<span class="logo"><img src="images/logo.svg" alt="" /></span>
+						<h1><strong>FewNLU: Benchmarking Few-Shot Natural Language Understanding</strong></h1>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="#intro" class="active">Introduction</a></li>
+							<li><a href="temp.html">Paper</a></li>
+							<li><a href="#toolkit">Toolkit</a></li>
+							<li><a href="#leaderboard">Leaderboard</a></li>
+							<li><a href="temp.html">Download</a></li>
+
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Introduction -->
+							<section id="intro" class="main">
+								<div class="spotlight">
+									<div class="content">
+										<header class="major">
+											<h2><strong>Introduction to FewNLU</strong></h2>
+										</header>
+										<p> Few-shot natural language understanding has attracted much recent attention.
+											However, prior methods have been evaluated under a diverse set of
+											protocols, which hinders fair comparison and measuring progress of the
+											field.
+											It is quested for a converged evaluation protocol as well as a general toolkit for few-shot NLU.
+											FewNLU addresses this issue from the following aspects.
+											<ul><ul><ul><li> FewNLU introduces an evaluation framework of few-shot NLU,
+											and uses comprehensive experiments to justify the choices of data split
+											construction and hyper-parameter search space formulation.
+											The evaluation framework can be viewed as correction, improvement, and
+											unification of previous evaluation protocols.
+											</li>
+											<li> Under this evaluation framework, a number of recently-proposed
+											state-of-the-art methods are re-evaluated.
+											Through these experiments, we benchmark the performance of prior methods
+											individually as well as the best performance with a combined approach. </li>
+											<li> We open-source a toolkit FewNLU to facilitate future
+											research based on our evaluation framework.
+											FewNLU also contains the implementation of a number of few-shot methods
+												along with data processing utilities.</li></ul></ul></ul>
+
+										Please refer to our <strong><a href="temp.html">Paper
+									</a></strong> for
+										more details.
+										We also release a new version of FewGLUE dataset for <strong><a
+											href="temp.html">Download
+									</a></strong>, which has been experimented in our paper.
+										</p>
+									</div>
+								</div>
+							</section>
+
+						<!-- First Section -->
+						<!--
+							<section id="first" class="main special">
+								<header class="major">
+									<h2>Data Download</h2>
+								</header>
+								<ul class="features">
+									<li>
+										<span class="icon solid major style1 fa-code"></span>
+										<h3>Recommended Few-shot Setting</h3>
+										<p align="left">The benchmark dataset supports our recommended legal & effective few-shot learning by providing an additional small-size development set of 32 examples.</p>
+									</li>
+									<li>
+										<span class="icon major style3 fa-copy"></span>
+										<h3>Diverse & Complicated NLU Tasks</h3>
+										<p align="left">The tasks are complicated sentence-pair or sentence-triple tasks that demand advanced understanding capabilities. Besides, the tasks are diverse, ranging from question answering, textual entailment, co-reference resolution, causal reasoning to word sense disambiguation.</p>
+									</li>
+									<li>
+										<span class="icon major style5 fa-gem"></span>
+										<h3>Support Integrating Other Learning Paradigms</h3>
+										<p align="left">The benchmark dataset also supports research that integrates other learning paradigms (such as semi-supervised learning) with few-shot learning by providing additional unlabeled datasets.</p>
+									</li>
+								</ul>
+								<footer class="major">
+									<ul class="actions special">
+										<li><a href="https://cloud.tsinghua.edu.cn/f/6e9cd075d9024dc3b6db/?dl=1" class="button">Download Data</a></li>
+									</ul>
+								</footer>
+							</section>
+						-->
+						<!-- Second Section -->
+							<section id="toolkit" class="main special">
+								<header class="major">
+									<h2><strong>FewNLU Toolkit</strong></h2>
+								</header>
+								<p align="left">
+									We open-source FewNLU, an integrated toolkit designed for few-shot natural language understanding.
+									It contains implementation of several state-of-the-art methods, data processing
+									utilities, a standardized few-shot training framework, and most importantly, the proposed evaluation framework.
+									FewNLU also allows customizing new tasks and methods,  and performing training and
+									evaluation over them.
+									The goal of FewNLU is to facilitate benchmarking few-shot NLU methods and
+									to facilitate future research in related field.
+									Key features and capabilities of FewNLU include:
+								</p>
+								<ul class="features">
+									<li>
+										<span class="icon solid major style1 fa-code"></span>
+										<h3><strong>An Evaluation Framework with Recommended
+											Data-split Strategy</strong></h3>
+										<p align="left">
+											We propose an evaluation framework for few-shot NLU.
+											The newly-formulated framework consists of a repeated
+											procedure -- selecting a hyperparameter, selecting a data split,
+											training and evaluating the model.
+										</p>
+									</li>
+									<li>
+										<span class="icon major style3 fa-copy"></span>
+										<h3><strong>A Collection of State-of-the-Art Methods for Few-Shot NLU</strong></h3>
+										<p align="left">
+											The FewNLU toolkit contains a number of state-of-the-art few-shot
+											methods. We take a further step to re-evaluate them under the
+											newly-proposed evaluation framework and report the results in
+											<strong><a href="#leaderboard">Leaderboard</a></strong>.
+										</p>
+									</li>
+									<li>
+										<span class="icon major style5 fa-gem"></span>
+										<h3><strong>Easy-to-Use Customization of Tasks and Methods</strong></h3>
+										<p align="left">
+											FewNLU allows customizing new tasks or methods with easy-to-use interfaces.
+											Customization enables NLU to easily scale to a diverse range of future works.
+										</p>
+									</li>
+								</ul>
+								<footer class="major">
+									<ul class="actions special">
+										<li><a href="temp.html" class="button">Get
+											Started with FewNLU Toolkit
+										</a></li>
+									</ul>
+								</footer>
+							</section>
+
+						<!-- Get Started -->
+							<section id="leaderboard" class="main special">
+								<header class="major">
+									<h2>Leaderboard</h2>
+								</header>
+								<p align="left">
+									<font size="3">
+									<strong><font size="4" color="red">Report your results:</font></strong>
+										If you have new results experimented with FewNLU, please send emails to
+										<a href = "mailto:zyanan93@gmail.com">zyanan93@gmail.com</a> or
+										<a href = "mailto:zhouj18@mails.tsinghua.edu.cn">zhouj18@mails.tsinghua.edu
+											.cn</a>.
+										The goal of this leaderboard is to collect
+											research works under the evaluation framework and to measure the true
+										progress of the field.
+										So It is encouraged that you <strong><font color="red">attach a link to the
+										reproducible
+										source codes</font></strong>. Thank you!
+
+									</font>
+								</p>
+									<table>
+										<tbody>
+										<tr>
+											<th></th>
+											<th> <strong> Methods </strong> </th>
+											<th> <strong> URL </strong> </th>
+											<th> <strong> Base Model </strong> </th>
+											<th> <strong> BoolQ</br>(Acc) </strong> </th>
+											<th> <strong> RTE</br>(Acc) </strong> </th>
+											<th> <strong> WiC</br>(Acc) </strong> </th>
+											<th> <strong> CB</br>(Acc/F1) </strong> </th>
+											<th> <strong> MultiRC</br>(F1a/EM)</strong> </th>
+											<th> <strong> WSC</br>(Acc)</strong> </th>
+											<th> <strong> COPA</br>(Acc)</strong> </th>
+											<th> <strong> Avg. </strong> </th>
+										</tr>
+
+										<tr>
+											<th><sub>&#127775;</sub></th>
+											<th>Combined<sup>12</sup> </th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 84.00 </br><font size="3">±0.55<font></th>
+											<th> 83.70 </br><font size="3">±0.62<font></th>
+											<th> 69.60 </br><font size="3">±2.15<font></th>
+											<th> 94.60/92.90 </br><font size="3">±1.46/±1.85<font></th>
+											<th> 81.00/46.00 </br><font size="3">±0.66/±0.84<font></th>
+											<th> 88.20 </br><font size="3">±1.44<font></th>
+											<th> 93.80 </br><font size="3">±2.99<font></th>
+											<th> 84.99 </th>
+										</tr>
+										<tr>
+											<th>2</th>
+											<th> iPET (c)<sup>12</sup></th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 83.45 </br><font size="3">±0.90<font></th>
+											<th> 83.12 </br><font size="3">±1.04<font></th>
+											<th> 69.63 </br><font size="3">±2.15<font></th>
+											<th> 91.52/90.72 </br><font size="3">±3.05/±2.68<font></th>
+											<th> 79.92/44.96 </br><font size="3">±1.11/±3.13<font></th>
+											<th> 88.22 </br><font size="3">±1.44<font></th>
+											<th> 93.75 </br><font size="3">±2.99<font></th>
+											<th> 81.68 </th>
+										</tr>
+										<tr>
+											<th>3</th>
+											<th> noisy (s)<sup>12</sup></th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 81.60 </br><font size="3">±1.54<font></th>
+											<th> 81.95 </br><font size="3">±2.01<font></th>
+											<th> 65.97 </br><font size="3">±2.44<font></th>
+											<th> 91.67/89.17 </br><font size="3">±2.33/±2.95<font></th>
+											<th> 79.85/45.10 </br><font size="3">±1.22/±2.58<font></th>
+											<th> 84.78 </br><font size="3">±3.01<font></th>
+											<th> 90.67 </br><font size="3">±2.53<font></th>
+											<th> 79.69 </th>
+										</tr>
+										<tr>
+											<th>4</th>
+											<th> P-Tuning</th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 82.25 </br><font size="3">±0.85<font></th>
+											<th> 82.22 </br><font size="3">±1.23<font></th>
+											<th> 66.22 </br><font size="3">±1.18<font></th>
+											<th> 94.20/91.76 </br><font size="3">±2.25/±3.30<font></th>
+											<th> 78.45/43.78 </br><font size="3">±1.46/±3.93<font></th>
+											<th> 84.62 </br><font size="3">±4.64<font></th>
+											<th> 86.50 </br><font size="3">±3.70<font></th>
+											<th> 79.41 </th>
+										</tr>
+										<tr>
+											<th>5</th>
+											<th> iPET (s)<sup>12</sup></th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 81.27 </br><font size="3">±1.61<font></th>
+											<th> 81.11 </br><font size="3">±1.89<font></th>
+											<th> 64.75 </br><font size="3">±4.27<font></th>
+											<th> 89.88/87.70 </br><font size="3">±5.01/±6.52<font></th>
+											<th> 79.99/45.23 </br><font size="3">±1.94/±2.19<font></th>
+											<th> 86.06 </br><font size="3">±3.03<font></th>
+											<th> 90.83 </br><font size="3">±2.79<font></th>
+											<th> 79.35 </th>
+										</tr>
+
+										<tr>
+											<th>6</th>
+											<th> noisy (c)<sup>12</sup></th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 82.28 </br><font size="3">±1.03<font></th>
+											<th> 79.87 </br><font size="3">±2.59<font></th>
+											<th> 67.20 </br><font size="3">±0.58<font></th>
+											<th> 89.73/88.49 </br><font size="3">±3.68/±3.49<font></th>
+											<th> 80.51/45.12 </br><font size="3">±0.88/±0.90<font></th>
+											<th> 84.13 </br><font size="3">±0.56<font></th>
+											<th> 90.00 </br><font size="3">±2.83<font></th>
+											<th> 79.34 </th>
+										</tr>
+										<tr>
+											<th>7</th>
+											<th> ADAPET</th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 81.28 </br><font size="3">±1.26<font></th>
+											<th> 82.58 </br><font size="3">±2.44<font></th>
+											<th> 66.50 </br><font size="3">±2.11<font></th>
+											<th> 89.73/86.63 </br><font size="3">±6.08/±7.29<font></th>
+											<th> 77.88/43.05 </br><font size="3">±2.55/±3.60<font></th>
+											<th> 83.41 </br><font size="3">±3.46<font></th>
+											<th> 88.75 </br><font size="3">±4.43<font></th>
+											<th> 78.74 </th>
+										</tr>
+
+
+										<tr>
+											<th>8</th>
+											<th> PET</th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 82.67 </br><font size="3">±0.78<font></th>
+											<th> 79.42 </br><font size="3">±2.41<font></th>
+											<th> 67.20 </br><font size="3">±1.34<font></th>
+											<th> 91.96/88.63 </br><font size="3">±3.72/±4.91<font></th>
+											<th> 78.18/42.79 </br><font size="3">±1.59/±2.42<font></th>
+											<th> 80.53 </br><font size="3">±1.82<font></th>
+											<th> 89.00 </br><font size="3">±2.94<font></th>
+											<th> 78.51 </th>
+										</tr>
+
+
+
+										<tr>
+											<th>9</th>
+											<th> PET+MLM<sup>1</sup></th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 82.80 </br><font size="3">±0.97<font></th>
+											<th> 83.30 </br><font size="3">±2.40<font></th>
+											<th> 58.23 </br><font size="3">±4.98<font></th>
+											<th> 90.18/87.18 </br><font size="3">±3.09/±6.17<font></th>
+											<th> 77.05/40.63 </br><font size="3">±1.80/±1.64<font></th>
+											<th> 78.37 </br><font size="3">±4.04<font></th>
+											<th> 85.75 </br><font size="3">±3.40<font></th>
+											<th> 76.57 </th>
+										</tr>
+
+										<tr>
+											<th>10</th>
+											<th> CLS </th>
+											<th><font size="3">
+												<a href="temp.html">(code)</a></br>
+												<a href="temp.html">(desc)</a>
+											</font></th>
+											<th> <font size="3">DeBERTa</br>(xxlarge) </font></th>
+											<th> 59.49 </br><font size="3">±1.74<font></th>
+											<th> 49.55 </br><font size="3">±2.23<font></th>
+											<th> 54.08 </br><font size="3">±2.15<font></th>
+											<th> 68.30/60.10 </br><font size="3">±3.96/±10.14<font></th>
+											<th> 75.42/34.23 </br><font size="3">±2.39/±5.02<font></th>
+											<th> 60.82 </br><font size="3">±14.23<font></th>
+											<th> 85.25 </br><font size="3">±2.22<font></th>
+											<th> 61.17 </th>
+										</tr>
+
+									</table>
+								<p align="left" style="line-height:100%">
+									<font size="3">
+										<strong>Notes:</strong>
+										</br>
+										1. Unlabeled data are used.</br>
+										2. The ensemble technique is used.</br>
+									</font>
+								</p>
+								</tbody>
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">&copy; Design: <a href="https://github.com/THUDM">THUDM</a>.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
