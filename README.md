@@ -16,10 +16,8 @@ field. Key features and capabilities of FewNLU include:
 
 Related Resources: 
 1. Paper: [FewNLU: Benchmarking State-of-the-Art Methods for 
-Few-Shot Natural Language Understanding](https://arxiv.org/abs/2109.12742).
-   
-2. Leaderboard: [https://fewnlu.github.io](https://fewnlu.github.io).
-    
+Few-Shot Natural Language Understanding](https://arxiv.org/abs/2109.12742). 
+2. Leaderboard: [https://fewnlu.github.io](https://fewnlu.github.io). 
 3. A new version of FewGLUE dataset: [Download](https://cloud.tsinghua.edu.cn/f/03b187bf3fff4a5fb1d1/?dl=1) and 
    [Homepage](https://paperswithcode.com/dataset/fewglue-64-labeled).
    
