@@ -5,11 +5,7 @@ Few-shot natural language understanding has attracted much recent attention. How
 evaluated under a diverse set of protocols, which hinders fair comparison and measuring progress of the field. It is 
 quested for a converged evaluation protocol as well as a general toolkit for few-shot NLU. 
 
-FewNLU is an integrated toolkit designed for few-shot natural language understanding (Few-Shot NLU).  
-It contains implementations of a number of state-of-the-art methods and data processing, a standard training 
-procedure and most importantly, a justified evaluation framework for few-shot NLU proposed in the [FewNLU paper](https://arxiv.org/abs/2109.12742).  FewNLU also allows customizing new tasks and methods, and performing training and evaluation over them. 
-The goal of FewNLU is to facilitate benchmarking few-shot NLU methods and to facilitate future research in related 
-field. Key features and capabilities of FewNLU include: 
+FewNLU is an integrated toolkit designed for few-shot natural language understanding (Few-Shot NLU). It contains implementations of a number of state-of-the-art methods and data processing, a standard training procedure and most importantly, a justified evaluation framework for few-shot NLU proposed in the [FewNLU paper](https://arxiv.org/abs/2109.12742).  FewNLU also allows customizing new tasks and methods, and performing training and evaluation over them. The goal of FewNLU is to facilitate benchmarking few-shot NLU methods and to facilitate future research in related field. Key features and capabilities of FewNLU include: 
 1. A justified evaluation framework with recommended data-split strategy for few-shot NLU.
 2. A collection of state-of-the-Art methods for few-shot NLU.
 3. Easy-to-Use customization of tasks and methods, which enables NLU to easily scale to a diverse range of future works.
