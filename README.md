@@ -11,12 +11,12 @@ FewNLU supports:
 3. Easy-to-Use Customization of Tasks and Methods.
 
 Resources:
-1. FewNLU paper --- [FewNLU: Benchmarking State-of-the-Art Methods for 
+1. [FewNLU: Benchmarking State-of-the-Art Methods for 
 Few-Shot Natural Language Understanding](https://arxiv.org/abs/2109.12742).
    
-2. FewNLU Leaderboard --- [https://fewnlu.github.io](https://fewnlu.github.io).
+2. [FewNLU Leaderboard](https://fewnlu.github.io).
     
-3. Data: [A 64-sample version FewGLUE dataset](https://cloud.tsinghua.edu.cn/f/3528a00629f8419ab9e2/?dl=1).
+3. [A 64-sample version FewGLUE dataset](https://cloud.tsinghua.edu.cn/f/3528a00629f8419ab9e2/?dl=1).
 
 
 
