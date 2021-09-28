@@ -1,7 +1,6 @@
 # FewNLU: Benchmarking State-of-the-Art Methods for Few-Shot Natural Language Understanding
 
 ## Introduction
-<<<<<<< HEAD
 Few-shot natural language understanding has attracted much recent attention. However, prior methods have been 
 evaluated under a diverse set of protocols, which hinders fair comparison and measuring progress of the field. It is 
 quested for a converged evaluation protocol as well as a general toolkit for few-shot NLU. 
