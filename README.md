@@ -63,15 +63,11 @@ and results vary a lot.
 2. The version of Transformers(version 3.0.5 and version 4.5.1) affects differently on few-shot performance.
 3. The version of Pytorch CUDA (10.5 and 11.0) affects few-shot performance.
 
-
 ### Direct Usage of Scripts
 1. Download either the original [32-sample version FewGLUE](https://github.com/timoschick/fewglue) dataset or our 
    [64-sample version FewGLUE](https://paperswithcode.com/dataset/fewglue-64-labeled) dataset. Set `DATA_DIR` with 
    your local data path. 
-   
 2. Specify `SAVE_PATH` to your local path, indicating where to save model checkpoints.
-   
-
 3. Run the following script (for example, run PET on the BoolQ task).
 ```
 bash scripts/search_pet_devsplit.sh <task_name> <gpu_id> <model_type>
@@ -84,20 +80,16 @@ Other adjustable key arguments include:
    standard sequence classification (`sequence_classifier`), pet (`pet`), ptuning (`ptuning`), adapet (`adapet`).
    You can also develop and customize your own new method by implementing a `Model` class. 
    Please refer to [Customizing your Own Methods](#Customizing your Own Methods) for more detailed instructions.
-   
 2. To choose among different training paradigms, one should specify `--arch`. Pre-defined training paradigms include 
    single-run paradigm (`default`), iPET (`ipet`) and Noisy Student (`noisy_student`)
-   
 3. To choose different tasks/datasets, one should specify `--dataset_name` (e.g., superglue) and `--task_name` (e.g.,
    rte).
 You can also apply FewNLU to new NLU tasks. You can customize your own new tasks by 
    simply implementing a `DataProcessor` for loading data and a `PVP` for patternizing data inputs. 
    Please see [Customizing your Own Tasks](#Customizing your Own Tasks) for more detailed instructions.
-
 3. To change your base pretrained models, one should specify `--model_type` (e.g., albert) and 
    `--model_name_or path` (e.g., microsoft/deberta-xxlarge-v2). Currently, FewNLU supports both
    bidirectional language models (e.g., bert-based models) and unidirectional models (e.g., gpt-based models).
-   
 
 ### Customizing your Own Tasks 
 To customize your own NLU tasks with FewNLU, you need to create your own dataset repository in [tasks](/tasks
@@ -124,14 +116,12 @@ label: 1
 ```
 [sentence1][SEP][sentence2]
 ```
-
 (2) When fine-tuning with manual discrete prompts, we design the patterns as follows. 
 ```
 Does "[sentence1]" has the same meaning with "[sentence2]"? [MASK].
 ```
 Accordingly, for verbalizers, the pretrained model predicts "Yes" for
  label `1` while "No" for label `0`. 
- 
 (3) For P-tuning which tunes pretrained models with continuous prompts, we design the patterns as follows.
 Based on the designed manual discrete prompt, we insert several continuous prompt words (e.g., here we insert one
 ) into it.
@@ -190,14 +180,10 @@ Here we take the `MRPCDataProcessor` as an example.
 class MRPCDataProcessor(DataProcessor):
     def get_labels():
         return ["1", "0"]
-    
 def _create_examples(self, path: str, set_type: str) -> List[InputExample]:
         examples = []
-        
         # TODO
-
         return examples
- 
 ```
 
 #### 4. Register your own Dataset & Tasks
@@ -205,9 +191,7 @@ After that, you should add dict-type variables `GLUE_METRICS` and `GLUE_PVPS` to
 .py), and `GLUEProcessors` to [tasks/glue/processors.py](tasks/glue/processors.py), as follows.
 ```
 GLUE_METRICS = {"mrpc": "acc"}
-
 GLUE_PVPS = {"mrpc": MRPCPVP}
-
 GLUE_PROCESSORS = {"mrpc": MRPCProcessor}
 ```
 
@@ -221,7 +205,6 @@ To run experiments on your new tasks with existing methods, based on the given s
 
 
 ## Customizing your own Methods
-
 To customize your own methods with FewNLU, you first need to create your own method repository in [methods](methods
 ). In sides the repository, you should define a model file, which implements the main parts of your new methods.
 
@@ -231,7 +214,6 @@ To customize your own methods with FewNLU, you first need to create your own met
 
 
 ## Acknowledgement
-
 Part of the code is based on [PET](https://github.com/timoschick/pet).
 We appreciate all the contributors who made their code & dataset public, which greatly advanced few-shot learning as well as this FewNLU project. 
 This repository will be continuously updated.
