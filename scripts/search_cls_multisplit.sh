@@ -15,7 +15,7 @@ if [ $model_type = "albert" ]; then
   model_name_or_path="albert-xxlarge-v2"
 
   TRAIN_BATCH_SIZE_CANDIDATES="8"
-  LR_CANDIDATES="1e−5 2e-5"
+  LR_CANDIDATES="1e-5 2e-5"
 
 elif [ $model_type = "deberta" ]; then
   model_name_or_path="microsoft/deberta-v2-xxlarge"
@@ -87,6 +87,7 @@ SEED="42"
 cv_k="4"
 every_eval_ratios="1.0"
 MAX_STEPS="5000 2500"
+split_ratio="0.5"
 
 
 for MAX_STEP in $MAX_STEPS
@@ -129,6 +130,7 @@ do
           --every_eval_ratio $every_eval_ratio \
           --cv_k $cv_k \
           --overwrite_output_dir \
+          --split_ratio $split_ratio \
           --fix_deberta >myout_${few_shot_setting}_${method}_${task_name}.file 2>&1 &
           wait
         done

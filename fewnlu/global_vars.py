@@ -8,10 +8,10 @@ from modified_hf_models.modeling_deberta_v2 import DebertaV2ForMaskedLM, Deberta
 TRAIN_SET = "train"
 DEV_SET = "dev"
 TEST_SET = "test"
-DEV32_SET = "dev32"
+# DEV32_SET = "dev32"
 UNLABELED_SET = "unlabeled"
 AUGMENTED_SET = "augmented"
-SET_TYPES = [TRAIN_SET, DEV_SET, TEST_SET, DEV32_SET, UNLABELED_SET, AUGMENTED_SET]
+SET_TYPES = [TRAIN_SET, DEV_SET, TEST_SET, UNLABELED_SET, AUGMENTED_SET]
 
 # dataset
 DEFAULT_METRICS = ["acc"]

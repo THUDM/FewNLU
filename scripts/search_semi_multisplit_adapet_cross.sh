@@ -46,7 +46,7 @@ TOTAL_TRAIN_BATCH=16
 EVAL_BATCH_SIZE=32
 DATA_ROOT=$data_dir
 TASK=$task_name
-
+max_num_lbl_tok=1
 
 if [ $TASK = "wic" ]; then
   DATA_DIR=${DATA_ROOT}WiC
@@ -138,19 +138,19 @@ CUDA_VISIBLE_DEVICES=$device python3 cli.py \
 
 
 
-# bash search_semi_multisplit_adapat_cross.sh boolq 0 1e-5 250 1 0.04 ipet deberta
-# bash search_semi_multisplit_adapat_cross.sh rte 0 5e-6 500 5 0.04 ipet deberta
-# bash search_semi_multisplit_adapat_cross.sh wic 0 5e-6 500 2 0.02 ipet deberta
-# bash search_semi_multisplit_adapat_cross.sh cb 0 1e-5 500 5 0.02 ipet deberta
-# bash search_semi_multisplit_adapat_cross.sh multirc 0 5e-6 500 0 0.02 ipet deberta
-# bash search_semi_multisplit_adapat_cross.sh wsc 0 1e-5 500 1 0.02 ipet deberta
-# bash search_semi_multisplit_adapat_cross.sh copa 0 5e-6 500 0 0.04 ipet deberta
+# bash search_semi_multisplit_adapet_cross.sh boolq 0 1e-5 250 1 0.04 ipet deberta
+# bash search_semi_multisplit_adapet_cross.sh rte 0 5e-6 500 5 0.04 ipet deberta
+# bash search_semi_multisplit_adapet_cross.sh wic 0 5e-6 500 2 0.02 ipet deberta
+# bash search_semi_multisplit_adapet_cross.sh cb 5 1e-5 500 5 0.02 ipet deberta
+# bash search_semi_multisplit_adapet_cross.sh multirc 0 5e-6 500 0 0.02 ipet deberta
+# bash search_semi_multisplit_adapet_cross.sh wsc 0 1e-5 500 1 0.02 ipet deberta
+# bash search_semi_multisplit_adapet_cross.sh copa 0 5e-6 500 0 0.04 ipet deberta
 
-# bash search_semi_multisplit_adapat_cross.sh boolq 0 1e-5 250 1 0.04 noisy_student deberta
-# bash search_semi_multisplit_adapat_cross.sh rte 0 5e-6 500 5 0.04 noisy_student deberta
-# bash search_semi_multisplit_adapat_cross.sh wic 0 5e-6 500 2 0.02 noisy_student deberta
-# bash search_semi_multisplit_adapat_cross.sh cb 0 1e-5 500 5 0.02 noisy_student deberta
-# bash search_semi_multisplit_adapat_cross.sh multirc 0 5e-6 500 0 0.02 noisy_student deberta
-# bash search_semi_multisplit_adapat_cross.sh wsc 0 1e-5 500 1 0.02 noisy_student deberta
-# bash search_semi_multisplit_adapat_cross.sh copa 0 5e-6 500 0 0.04 noisy_student deberta
+# bash search_semi_multisplit_adapet_cross.sh boolq 0 1e-5 250 1 0.04 noisy_student deberta
+# bash search_semi_multisplit_adapet_cross.sh rte 0 5e-6 500 5 0.04 noisy_student deberta
+# bash search_semi_multisplit_adapet_cross.sh wic 0 5e-6 500 2 0.02 noisy_student deberta
+# bash search_semi_multisplit_adapet_cross.sh cb 0 1e-5 500 5 0.02 noisy_student deberta
+# bash search_semi_multisplit_adapet_cross.sh multirc 0 5e-6 500 0 0.02 noisy_student deberta
+# bash search_semi_multisplit_adapet_cross.sh wsc 0 1e-5 500 1 0.02 noisy_student deberta
+# bash search_semi_multisplit_adapet_cross.sh copa 0 5e-6 500 0 0.04 noisy_student deberta
 

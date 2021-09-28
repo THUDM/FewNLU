@@ -7,7 +7,7 @@ every_eval_ratio=$6
 arch_method=$7
 model_type=$8
 
-PATTERN_IDS=0
+PATTERN_IDS=1
 
 few_shot_setting="dev32_split"
 dataset_name="superglue"
@@ -131,7 +131,7 @@ CUDA_VISIBLE_DEVICES=$device python3 cli.py \
   --max_steps $MAX_STEP \
   --sampler_seed $SAMPLER_SEED \
   --seed $SEED \
-  --warmup_step_ratio $warmup_ratio \
+  --warmup_step_ratio $WARMUP_RATIO \
   --learning_rate $LR \
   --repetitions 1 \
   --embedding_learning_rate $EMB_LR \
@@ -148,12 +148,12 @@ CUDA_VISIBLE_DEVICES=$device python3 cli.py \
 
 
 # bash search_semi_multisplit_ptuning_cross.sh boolq 0 5e-6 500 mlp 0.02 ipet deberta
-# bash search_semi_multisplit_ptuning_cross.sh rte 0 5e-6 250 lstm 0.02 ipet deberta 
+# bash search_semi_multisplit_ptuning_cross.sh rte 1 5e-6 250 lstm 0.02 ipet deberta 
 # bash search_semi_multisplit_ptuning_cross.sh wic 0 5e-6 500 lstm 0.02 ipet deberta 
 # bash search_semi_multisplit_ptuning_cross.sh cb 0 1e-5 250 lstm 0.04 ipet deberta 
 # bash search_semi_multisplit_ptuning_cross.sh multirc 0 1e-5 500 lstm 0.02 ipet deberta 
 # bash search_semi_multisplit_ptuning_cross.sh wsc 0 1e-5 250 mlp 0.04 ipet deberta
-# bash search_semi_multisplit_ptuning_cross.sh copa 0 1e-5 500 mlp 0.04 ipet deberta
+# bash search_semi_multisplit_ptuning_cross.sh copa 7 1e-5 500 mlp 0.04 ipet deberta
 
 
 # bash search_semi_multisplit_ptuning_cross.sh boolq 0 5e-6 500 mlp 0.02 noisy_student deberta

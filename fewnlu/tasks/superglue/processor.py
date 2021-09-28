@@ -22,7 +22,7 @@ from typing import List, Dict, Callable
 
 import log
 from utils import InputExample
-from global_vars import AUGMENTED_SET, TRAIN_SET, DEV32_SET, DEV_SET, TEST_SET, UNLABELED_SET
+from global_vars import AUGMENTED_SET, TRAIN_SET, DEV_SET, TEST_SET, UNLABELED_SET
 from tasks.base_processor import DataProcessor
 
 logger = log.get_logger()
@@ -34,13 +34,13 @@ class SuperGLUEDataProcessor(DataProcessor):
 
     TRAIN_FILE = "train.jsonl"
     DEV_FILE = "val.jsonl"
-    DEV32_FILE = "dev32.jsonl"
+    # DEV32_FILE = "dev32.jsonl"
     TEST_FILE = "test.jsonl"
     UNLABELED_FILE = "unlabeled.jsonl"
     AUGMENTED_FILE = "augmented.jsonl"
 
-    WSC_TRAIN_FILE_FOR_CLS = "train_for_cls.jsonl"
-    WSC_DEV32_FILE_FOR_CLS = "dev32_for_cls.jsonl"
+    # WSC_TRAIN_FILE_FOR_CLS = "train_for_cls.jsonl"
+    # WSC_DEV32_FILE_FOR_CLS = "dev32_for_cls.jsonl"
 
     def __init__(self, task_name: str):
         super(SuperGLUEDataProcessor, self).__init__()
@@ -48,13 +48,16 @@ class SuperGLUEDataProcessor(DataProcessor):
         assert self.task_name in SUPERGLUE_PROCESSORS
 
     def get_train_examples(self, data_dir, use_cloze):
+        """
         if not use_cloze and self.task_name == "wsc":
             logger.info("Loading CLS train set for WSC task.")
             return self._create_examples(os.path.join(data_dir, SuperGLUEDataProcessor.WSC_TRAIN_FILE_FOR_CLS),  TRAIN_SET, use_cloze=False)
         elif self.task_name=='wsc':
             return self._create_examples(os.path.join(data_dir, SuperGLUEDataProcessor.WSC_TRAIN_FILE_FOR_CLS),  TRAIN_SET, use_cloze=True)
+        """
         return self._create_examples(os.path.join(data_dir, SuperGLUEDataProcessor.TRAIN_FILE), TRAIN_SET)
 
+    """
     def get_dev32_examples(self, data_dir, use_cloze):
         if not use_cloze and self.task_name == "wsc":
             logger.info("Loading CLS dev32 set for WSC task.")
@@ -62,6 +65,7 @@ class SuperGLUEDataProcessor(DataProcessor):
         elif self.task_name=='wsc':
             return self._create_examples(os.path.join(data_dir, SuperGLUEDataProcessor.WSC_DEV32_FILE_FOR_CLS),  TRAIN_SET, use_cloze=True)
         return self._create_examples(os.path.join(data_dir, SuperGLUEDataProcessor.DEV32_FILE), DEV32_SET)
+    """
 
     def get_dev_examples(self, data_dir):
         return self._create_examples(os.path.join(data_dir, SuperGLUEDataProcessor.DEV_FILE), DEV_SET)
@@ -140,14 +144,87 @@ class WscProcessor(SuperGLUEDataProcessor):
     def get_labels(self):
         return ["False", "True"]
 
+    """
+    def _create_examples(self, path: str, set_type: str, use_cloze: bool=True) -> List[InputExample]:
+        if set_type == TRAIN_SET:
+            return self._create_train_examples(path=path, set_type=set_type, use_cloze=use_cloze)
+        else:
+            return self._create_other_examples(path=path, set_type=set_type, use_cloze=use_cloze)
+    """
+
     def _create_examples(self, path: str, set_type: str, use_cloze: bool=True) -> List[InputExample]:
         examples = []
         with open(path, encoding='utf8') as f:
             for line in f:
                 example_json = json.loads(line)
                 idx = example_json['idx']
-                label = str(example_json['label']) if 'label' in example_json else None
                 guid = "%s-%s" % (set_type, idx)
+                text_a = example_json['text']
+
+                def process_wsc(target, text_a):
+                    label = str(target['label']) if 'label' in target else None
+                    meta = {
+                        'span1_text': target['span1_text'],
+                        'span2_text': target['span2_text'],
+                        'span1_index': target['span1_index'],
+                        'span2_index': target['span2_index']
+                    }
+                    # the indices in the dataset are wrong for some examples, so we manually fix them
+                    span1_index, span1_text = meta['span1_index'], meta['span1_text']
+                    span2_index, span2_text = meta['span2_index'], meta['span2_text']
+                    words_a = text_a.split()
+                    words_a_lower = text_a.lower().split()
+                    words_span1_text = span1_text.lower().split()
+                    span1_len = len(words_span1_text)
+
+                    if words_a_lower[span1_index:span1_index + span1_len] != words_span1_text:
+                        for offset in [-1, +1]:
+                            if words_a_lower[span1_index + offset:span1_index + span1_len + offset] == words_span1_text:
+                                span1_index += offset
+
+                    if words_a_lower[span1_index:span1_index + span1_len] != words_span1_text:
+                        logger.warning(f"Got '{words_a_lower[span1_index:span1_index + span1_len]}' but expected "
+                                    f"'{words_span1_text}' at index {span1_index} for '{words_a}'")
+
+                    if words_a[span2_index] != span2_text:
+                        for offset in [-1, +1]:
+                            if words_a[span2_index + offset] == span2_text:
+                                span2_index += offset
+
+                        if words_a[span2_index] != span2_text and words_a[span2_index].startswith(span2_text):
+                            words_a = words_a[:span2_index] \
+                                    + [words_a[span2_index][:len(span2_text)], words_a[span2_index][len(span2_text):]] \
+                                    + words_a[span2_index + 1:]
+
+                    assert words_a[span2_index] == span2_text, \
+                        f"Got '{words_a[span2_index]}' but expected '{span2_text}' at index {span2_index} for '{words_a}'"
+                    text_a = ' '.join(words_a)
+                    meta['span1_index'], meta['span2_index'] = span1_index, span2_index
+                    return text_a,label,meta
+
+                if set_type==TRAIN_SET:
+                    text_a,label,meta=process_wsc(example_json["true_target"],example_json['text'])
+                    example_true = InputExample(guid=guid, text_a=text_a, label=label, meta=meta, idx=idx)
+                    text_a,label,meta=process_wsc(example_json["false_target"],example_json['text'])
+                    example_false = InputExample(guid=guid, text_a=text_a, label=label, meta=meta, idx=idx)
+                    examples.append(example_true)
+                    examples.append(example_false)
+                else:
+                    text_a,label,meta=process_wsc(example_json['target'],example_json['text'])
+                    example = InputExample(guid=guid, text_a=text_a, label=label, meta=meta, idx=idx)
+                    examples.append(example)
+            return examples
+
+
+    """
+    def _create_other_examples(self, path: str, set_type: str, use_cloze: bool=True) -> List[InputExample]:
+        examples = []
+        with open(path, encoding='utf8') as f:
+            for line in f:
+                example_json = json.loads(line)
+                idx = example_json['idx']
+                guid = "%s-%s" % (set_type, idx)
+                label = str(example_json['label']) if 'label' in example_json else None
                 text_a = example_json['text']
                 meta = {
                     'span1_text': example_json['target']['span1_text'],
@@ -194,7 +271,7 @@ class WscProcessor(SuperGLUEDataProcessor):
                 #     continue
                 examples.append(example)
         return examples
-
+    """
 
 class BoolQProcessor(SuperGLUEDataProcessor):
     """Processor for the SuperGLUE BoolQ task."""
@@ -240,7 +317,7 @@ class CopaProcessor(SuperGLUEDataProcessor):
                 example = InputExample(guid=guid+'-o', text_a=text_a, label=label, meta=meta, idx=idx)
                 examples.append(example)
 
-        if set_type == TRAIN_SET or set_type == UNLABELED_SET or set_type == DEV32_SET:
+        if set_type == TRAIN_SET or set_type == UNLABELED_SET:
             mirror_examples = []
             for ex in examples:
                 label = "1" if ex.label == "0" else "0"

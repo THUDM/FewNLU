@@ -152,28 +152,28 @@ done
 
 
 # for multi-splits:
-# nohup bash search_pet_multisplit.sh boolq 0 dev32_split >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh rte 1 dev32_split >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh wic 2 dev32_split >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh cb 3 dev32_split >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh multirc 4 dev32_split >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh wsc 5 dev32_split >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh copa 6 dev32_split >myout.file 2>&1 &
+# nohup bash setting_experiment.sh boolq 0 dev32_split >myout.file 2>&1 &
+# nohup bash setting_experiment.sh rte 1 dev32_split >myout.file 2>&1 &
+# nohup bash setting_experiment.sh wic 2 dev32_split >myout.file 2>&1 &
+# nohup bash setting_experiment.sh cb 3 dev32_split >myout.file 2>&1 &
+# nohup bash setting_experiment.sh multirc 4 dev32_split >myout.file 2>&1 &
+# nohup bash setting_experiment.sh wsc 5 dev32_split >myout.file 2>&1 &
+# nohup bash setting_experiment.sh copa 6 dev32_split >myout.file 2>&1 &
 
 # for CV:
-# nohup bash search_pet_multisplit.sh boolq 0 cross_validation >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh rte 1 cross_validation >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh wic 2 cross_validation >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh cb 3 cross_validation >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh multirc 4 cross_validation >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh wsc 5 cross_validation >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh copa 6 cross_validation >myout.file 2>&1 &
+# nohup bash setting_experiment.sh boolq 0 cross_validation >myout.file 2>&1 &
+# nohup bash setting_experiment.sh rte 1 cross_validation >myout.file 2>&1 &
+# nohup bash setting_experiment.sh wic 2 cross_validation >myout.file 2>&1 &
+# nohup bash setting_experiment.sh cb 3 cross_validation >myout.file 2>&1 &
+# nohup bash setting_experiment.sh multirc 4 cross_validation >myout.file 2>&1 &
+# nohup bash setting_experiment.sh wsc 5 cross_validation >myout.file 2>&1 &
+# nohup bash setting_experiment.sh copa 6 cross_validation >myout.file 2>&1 &
 
 # for MDL:
-# nohup bash search_pet_multisplit.sh boolq 0 mdl >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh rte 1 mdl >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh wic 2 mdl >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh cb 3 mdl >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh multirc 4 mdl >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh wsc 5 mdl >myout.file 2>&1 &
-# nohup bash search_pet_multisplit.sh copa 6 mdl >myout.file 2>&1 &
+# nohup bash setting_experiment.sh boolq 0 mdl >myout.file 2>&1 &
+# nohup bash setting_experiment.sh rte 1 mdl >myout.file 2>&1 &
+# nohup bash setting_experiment.sh wic 2 mdl >myout.file 2>&1 &
+# nohup bash setting_experiment.sh cb 3 mdl >myout.file 2>&1 &
+# nohup bash setting_experiment.sh multirc 4 mdl >myout.file 2>&1 &
+# nohup bash setting_experiment.sh wsc 5 mdl >myout.file 2>&1 &
+# nohup bash setting_experiment.sh copa 6 mdl >myout.file 2>&1 &

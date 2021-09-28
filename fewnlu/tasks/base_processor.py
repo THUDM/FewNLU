@@ -21,10 +21,11 @@ class DataProcessor(ABC):
         """Get a collection of `InputExample`s for the dev set."""
         pass
 
+    """
     @abstractmethod
     def get_dev32_examples(self, data_dir, use_cloze: bool) -> ProcessorOutputPattern:
-        """Get a collection of `InputExample`s for the dev32 set."""
         pass
+    """
 
     @abstractmethod
     def get_test_examples(self, data_dir) -> ProcessorOutputPattern:

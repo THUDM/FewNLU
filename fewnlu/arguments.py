@@ -12,8 +12,8 @@ def add_few_shot_setting_args(parser):
     group.add_argument('--few_shot_setting', type=str, default='dev32_setting', choices=['fix_setting', "dev32_setting", "cross_validation", "mdl", "dev32_split"],
                        help="Which few-shot setting to use.")
     group.add_argument('--cv_k',type=int,default=4)
+    group.add_argument('--split_ratio', type=float, default=0.5, help="The split ratio for Multi-Split strategy.")
     return parser
-
 
 def add_required_args(parser):
     parser.add_argument("--method", type=str, required=True, choices=METHOD_CLASSES.keys(),

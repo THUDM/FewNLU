@@ -8,7 +8,7 @@ from tasks.superglue.pvp import SUPERGLUE_PVPS, SUPERGLUE_METRICS
 from utils import InputExample, eq_div
 from tasks.base_processor import ProcessorOutputPattern
 
-from global_vars import UNLABELED_SET, TRAIN_SET, DEV32_SET, DEV_SET, TEST_SET, AUGMENTED_SET, SET_TYPES
+from global_vars import UNLABELED_SET, TRAIN_SET, DEV_SET, TEST_SET, AUGMENTED_SET, SET_TYPES
 
 logger = log.get_logger()
 
@@ -94,8 +94,8 @@ def load_examples(dataset_name: str,
 
     if set_type == DEV_SET:
         examples = processor.get_dev_examples(data_dir)
-    elif set_type == DEV32_SET:
-        examples = processor.get_dev32_examples(data_dir, use_cloze)
+    # elif set_type == DEV32_SET:
+    #     examples = processor.get_dev32_examples(data_dir, use_cloze)
     elif set_type == TEST_SET:
         examples = processor.get_test_examples(data_dir)
     elif set_type == TRAIN_SET:
@@ -144,7 +144,8 @@ def load_dataset(args):
         dev32_ex_per_label = eq_div(args.dev32_examples, len(args.label_list)) if args.dev32_examples != -1 else -1
 
     train_data = load_examples(dataset_name, task_name, data_dir, TRAIN_SET, use_cloze, num_examples=train_ex, num_examples_per_label=train_ex_per_label, seed=seed)
-    dev32_data = load_examples(dataset_name, task_name, data_dir, DEV32_SET, use_cloze,num_examples=dev32_ex, num_examples_per_label=dev32_ex_per_label, seed=seed)
+    # dev32_data = load_examples(dataset_name, task_name, data_dir, DEV32_SET, use_cloze,num_examples=dev32_ex,
+    # num_examples_per_label=dev32_ex_per_label, seed=seed)
 
     eval_ex_per_label = None
     if args.eval_set == 'test':
@@ -163,7 +164,7 @@ def load_dataset(args):
     # pdb.set_trace()
     unlabeled_data = load_examples(dataset_name, task_name, data_dir, UNLABELED_SET, use_cloze, args.unlabeled_examples, None, seed)
 
-    return train_data, dev32_data, eval_data, unlabeled_data
+    return train_data, eval_data, unlabeled_data
 
 DATASETS={
     "superglue": {

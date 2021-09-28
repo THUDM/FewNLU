@@ -5,12 +5,11 @@ MAX_STEP=$4
 PATTERN_IDS=$5
 every_eval_ratio=$6
 arch_method=$7
+model_type=$8
 
-model_type="deberta"
 few_shot_setting="dev32_split"
 dataset_name="superglue"
 method="pet"
-
 data_dir=$YOUR_DATA_DIR
 save_dir=$YOUR_SAVE_DIR/${few_shot_setting}/${model_type}_${task_name}_${arch_method}_${method}_model
 
@@ -101,7 +100,7 @@ HYPER_PARAMS=${SEQ_LENGTH}_${MAX_STEP}_${TOTAL_TRAIN_BATCH}_${TRAIN_BATCH_SIZE}_
 OUTPUT_DIR=$save_dir/${HYPER_PARAMS}
 echo METHOD = "$method"
 echo ARCH METHOD = "$arch_method"
-CUDA_VISIBLE_DEVICES=$device nohup python3 cli.py \
+CUDA_VISIBLE_DEVICES=$device python3 cli.py \
   --method $method \
   --arch_method $arch_method \
   --data_dir $DATA_DIR \

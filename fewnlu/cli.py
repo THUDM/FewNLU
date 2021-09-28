@@ -93,110 +93,154 @@ def _write_results(path: str, results: Dict, dev32_results=None):
     return ret_dict
 
 class DataProvider(object):
-    def __init__(self,args,train_data,dev32_data):
-        self.train_data = train_data
-        self.dev32_data = dev32_data
+    def __init__(self,args, train_data):
+
+        self.split_ratio=args.split_ratio
+
         self.few_shot_setting = args.few_shot_setting
         self.task_name = args.task_name
         self.fold_num = args.cv_k
         self.seed = args.seed
         self.method = args.method
         rng = random.Random(self.seed)
-        self.seeds=[rng.randint(0,10000) for _ in range(args.cv_k)]
-        self.all_data=dev32_data if self.few_shot_setting=='mdl' else train_data+dev32_data
-        if self.task_name=='wsc':
-            self.all_data=self.rearange_wsc_data(self.all_data)
-        if self.few_shot_setting not in ['fix_setting','dev32_setting']:
+        self.seeds = [rng.randint(0, 10000) for _ in range(args.cv_k)]
+        # self.all_data=dev32_data if self.few_shot_setting=='mdl' else train_data+dev32_data
+        self.all_data = train_data
+        if self.task_name == 'wsc':
+            self.all_data = self.rearange_wsc_data(self.all_data)
+        if self.few_shot_setting not in ['fix_setting', 'dev32_setting']:
             # assert len(train_data) == len(dev32_data)
             if self.task_name in ["multirc", 'copa']:
                 cur_all_data = {}
                 for item in self.all_data:
-                    guid  = "-".join(item.guid.split("-")[:-1])
+                    guid = "-".join(item.guid.split("-")[:-1])
                     if guid in cur_all_data:
                         cur_all_data[guid].append(item)
                     else:
                         cur_all_data[guid] = [item]
                 cur_all_data = list(cur_all_data.items())
-                self.cur_all_data=cur_all_data
-        if self.few_shot_setting in ['cross_validation','mdl']:
-            data_set=[]
-            dlen=len(self.all_data) if args.task_name not in ["multirc", 'copa'] else len(self.cur_all_data)
+                self.cur_all_data = cur_all_data
+                self.all_data = [y for (x, y) in self.cur_all_data]
+        if self.few_shot_setting=='mdl':
+            num = int(len(self.all_data)//2)
+        else:
+            num = int(len(self.all_data) * self.split_ratio)
+
+        self.train_data = self.all_data[:num]
+        self.dev32_data = self.all_data[num:]
+
+        if self.task_name in ["multirc", "copa"]:
+            self.train_data = list(itertools.chain.from_iterable(self.train_data))
+            self.dev32_data = list(itertools.chain.from_iterable(self.dev32_data))
+        if self.few_shot_setting == 'mdl':
+            if self.task_name in ["multirc", 'copa']:
+                self.cur_all_data = cur_all_data = self.cur_all_data[num:]
+            else:
+                self.all_data = self.all_data[num:]
+        if self.few_shot_setting in ['cross_validation', 'mdl']:
+            data_set = []
+            dlen = len(self.all_data) if args.task_name not in ["multirc", 'copa'] else len(self.cur_all_data)
             num_samples_per_fold = round(dlen / self.fold_num)
             for idx in range(self.fold_num):
                 start_idx = idx * num_samples_per_fold
-                end_idx = dlen if idx==self.fold_num-1 else int((idx+1)*num_samples_per_fold)
-                if args.task_name not in ["multirc","copa"]:
+                end_idx = dlen if idx == self.fold_num - 1 else int((idx + 1) * num_samples_per_fold)
+                if args.task_name not in ["multirc", "copa"]:
                     cur_data_set = self.all_data[start_idx:end_idx]
                     data_set.append(cur_data_set)
                 else:
-                    cur_data_set=[data_list for (guid, data_list) in cur_all_data[start_idx:end_idx]]
+                    cur_data_set = [data_list for (guid, data_list) in cur_all_data[start_idx:end_idx]]
                     data_set.append(list(itertools.chain.from_iterable(cur_data_set)))
             assert len(data_set) == self.fold_num
-            self.data_set=data_set
+            self.data_set = data_set
 
-    def rearange_wsc_data(self,examples):
-        aranged_examples=[]
+        logger.info(len(self.train_data))
+        logger.info(len(self.dev32_data))
+        logger.info(len(self.all_data))
+
+    def rearange_wsc_data(self, examples):
+        aranged_examples = []
         for e in examples:
-            if len(aranged_examples)!=0 and len(set(e.text_a.split()).intersection(set(aranged_examples[-1][0].text_a.split())))>len(set(e.text_a.split()))*0.8:
+            if len(aranged_examples) != 0 and len(
+                    set(e.text_a.split()).intersection(set(aranged_examples[-1][0].text_a.split()))) > len(
+                    set(e.text_a.split())) * 0.8:
                 aranged_examples[-1].append(e)
             else:
                 aranged_examples.append([e])
         return aranged_examples
 
-    def wsc_rm_false(self,examples):
-        return [e for e in examples if e.label=='True']
+    def wsc_sample(self,examples,use_cloze,rng):
+        new_examples=[]
+        for e in examples:
+            [e1,e2]=e
+            if use_cloze==True:
+                new_e=e1 if e1.label=='True' else e2
+            else:
+                rand_num = rng.random()
+                new_e=e1 if rand_num < 0.5 else e2
+            new_examples.append(new_e)
+        return new_examples
 
-    def get_splited_data(self,fold_id=-1):
+    def get_splited_data(self, fold_id=-1):
         if self.few_shot_setting == 'fix_setting':
-            if self.task_name=='wsc' and self.method!='sequence_classifier':
-                return self.wsc_rm_false(self.train_data+self.dev32_data),None
-            return self.train_data+self.dev32_data,None
+            if self.task_name == 'wsc':
+                use_cloze=True if self.method != 'sequence_classifier' else False
+                rng = random.Random(self.seed)
+                return self.wsc_sample(self.train_data + self.dev32_data, use_cloze, rng), None
+            return self.train_data + self.dev32_data, None
         elif self.few_shot_setting == 'dev32_setting':
-            if self.task_name=='wsc':
-                return self.wsc_rm_false(self.train_data),self.dev32_data
-            return self.train_data,self.dev32_data
+            if self.task_name == 'wsc':
+                use_cloze=True if self.method != 'sequence_classifier' else False
+                rng = random.Random(self.seed)
+                return self.wsc_sample(self.train_data,use_cloze,rng), self.wsc_sample(self.dev32_data,False,rng)
+            return self.train_data, self.dev32_data
         elif self.few_shot_setting == 'dev32_split':
-            fold_seed=self.seeds[fold_id]
+            fold_seed = self.seeds[fold_id]
             rng = random.Random(fold_seed)
-            if self.task_name not in ['multirc','copa']:
-                # number = int(len(self.all_data) / 2) if self.task_name == "wsc" and self.method == "sequence_classifier" else len(self.train_data)
-                number = int(len(self.all_data)/2)
-                all_data=copy.deepcopy(self.all_data)
+            if self.task_name not in ['multirc', 'copa']:
+                number = int(len(self.all_data) * self.split_ratio)
+                all_data = copy.deepcopy(self.all_data)
                 rng.shuffle(all_data)
                 cur_train_data = all_data[:number]
                 cur_dev32_data = all_data[number:]
             else:
-                cur_all_data=copy.deepcopy(self.cur_all_data)
+                cur_all_data = copy.deepcopy(self.cur_all_data)
                 rng.shuffle(cur_all_data)
                 all_num = len(cur_all_data)
-                number = int(all_num / 2)
+
+                number = int(all_num * self.split_ratio)
                 cur_train_data_set = [data_list for (guid, data_list) in cur_all_data[:number]]
                 cur_dev32_data_set = [data_list for (guid, data_list) in cur_all_data[number:]]
                 cur_train_data = list(itertools.chain.from_iterable(cur_train_data_set))
                 cur_dev32_data = list(itertools.chain.from_iterable(cur_dev32_data_set))
-            if self.task_name=='wsc':
-                cur_train_data=list(itertools.chain.from_iterable(cur_train_data))
-                cur_dev32_data=list(itertools.chain.from_iterable(cur_dev32_data))
-                cur_train_data=self.wsc_rm_false(cur_train_data) if self.method!='sequence_classifier' else cur_train_data
-            return cur_train_data,cur_dev32_data
+            if self.task_name == 'wsc':
+                use_cloze=True if self.method != 'sequence_classifier' else False
+                cur_train_data=self.wsc_sample(cur_train_data,use_cloze,rng)
+                cur_dev32_data=self.wsc_sample(cur_dev32_data,False,rng)
+
+            logger.info("train/dev data number:")
+            logger.info(len(cur_train_data))
+            logger.info(len(cur_dev32_data))
+            return cur_train_data, cur_dev32_data
         elif self.few_shot_setting == "cross_validation":
+            rng = random.Random(self.seeds[fold_id])
             cur_dev32_data = self.data_set[fold_id]
-            cur_train_data = list(itertools.chain.from_iterable([self.data_set[j] for j in range(self.fold_num) if j != fold_id]))
-            if self.task_name=='wsc':
-                cur_train_data=list(itertools.chain.from_iterable(cur_train_data))
-                cur_dev32_data=list(itertools.chain.from_iterable(cur_dev32_data))
-                cur_train_data=self.wsc_rm_false(cur_train_data) if self.method!='sequence_classifier' else cur_train_data
-            return cur_train_data,cur_dev32_data
+            cur_train_data = list(
+                itertools.chain.from_iterable([self.data_set[j] for j in range(self.fold_num) if j != fold_id]))
+            if self.task_name == 'wsc':
+                use_cloze=True if self.method != 'sequence_classifier' else False
+                cur_train_data=self.wsc_sample(cur_train_data,use_cloze,rng)
+                cur_dev32_data=self.wsc_sample(cur_dev32_data,False,rng)
+            return cur_train_data, cur_dev32_data
         elif self.few_shot_setting == "mdl":
+            rng = random.Random(self.seeds[fold_id])
             cur_dev32_data = self.data_set[fold_id]
-            if self.task_name=='wsc':
-                cur_train_data = self.train_data + list(itertools.chain.from_iterable(list(itertools.chain.from_iterable([self.data_set[j] for j in range(self.fold_num) if j < fold_id]))))
-                # cur_train_data=list(itertools.chain.from_iterable(cur_train_data))
-                cur_dev32_data=list(itertools.chain.from_iterable(cur_dev32_data))
-                cur_train_data=self.wsc_rm_false(cur_train_data) if self.method!='sequence_classifier' else cur_train_data
-            else:
-                cur_train_data = self.train_data + list(itertools.chain.from_iterable([self.data_set[j] for j in range(self.fold_num) if j < fold_id]))
-            return cur_train_data,cur_dev32_data
+            cur_train_data = self.train_data + list(
+                    itertools.chain.from_iterable([self.data_set[j] for j in range(self.fold_num) if j < fold_id]))
+            if self.task_name == 'wsc':
+                use_cloze=True if self.method != 'sequence_classifier' else False
+                cur_train_data=self.wsc_sample(cur_train_data,use_cloze,rng)
+                cur_dev32_data=self.wsc_sample(cur_dev32_data,False,rng)
+            return cur_train_data, cur_dev32_data
 
 def iterative_run(dataprovider, eval_data, wrapper_config, train_eval_config, unlabeled_data=None, aug_data=None, output_dir=None):
     output_dir = output_dir if output_dir is not None else wrapper_config.output_dir
@@ -455,18 +499,18 @@ def main():
     train_eval_config = get_train_eval_config(args)
 
     ### prepare data
-    train_data, dev32_data, eval_data, unlabeled_data = load_dataset(data_config)
+    train_data, eval_data, unlabeled_data = load_dataset(data_config)
     if args.aug_data_dir is not None:
         aug_data = processor._create_examples(args.aug_data_dir,"aug")
     else:
         aug_data = None
 
-    logger.info('train_data: {}, dev32_data: {}, eval_data: {}'.format(len(train_data),len(dev32_data),len(eval_data)))
+    logger.info('train_data: {}, eval_data: {}'.format(len(train_data),len(eval_data)))
 
     start_time = time.time()
     # prepare train_data and dev32_data
     # train_datas,dev32_datas=prepare_splited_data(args,train_data,dev32_data)
-    dataprovider=DataProvider(args,train_data,dev32_data)
+    dataprovider=DataProvider(args,train_data) #,dev32_data)
     # x1,y1=dataprovider.get_splited_data(0)
     # x2,y2=dataprovider.get_splited_data(1)
     # x3,y3=dataprovider.get_splited_data(2)

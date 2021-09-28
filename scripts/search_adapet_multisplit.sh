@@ -13,9 +13,8 @@ save_dir=$YOUR_SAVE_DIR/${few_shot_setting}/${model_type}_${task_name}_${arch_me
 
 if [ $model_type = "albert" ]; then
   model_name_or_path="albert-xxlarge-v2"
-
   TRAIN_BATCH_SIZE_CANDIDATES="8"
-  LR_CANDIDATES="1e−5 2e-5"
+  LR_CANDIDATES="1e-5 2e-5"
 
 elif [ $model_type = "deberta" ]; then
   model_name_or_path="microsoft/deberta-v2-xxlarge"
@@ -38,7 +37,7 @@ echo ------------------------------------
 
 
 SEQ_LENGTH=256
-TOTAL_TRAIN_BATCH="16"
+TOTAL_BATCH_SIZE_CANDIDATES="16"
 EVAL_BATCH_SIZE=32
 DATA_ROOT=$data_dir
 TASK=$task_name
@@ -103,6 +102,7 @@ SAMPLER_SEED="42"
 SEED="42"
 every_eval_ratios="0.02 0.04"
 cv_k="4"
+split_ratio="0.5"
 
 
 for MAX_STEP in $MAX_STEPS
@@ -147,6 +147,7 @@ do
           --few_shot_setting $few_shot_setting \
           --every_eval_ratio $every_eval_ratio \
           --cv_k $cv_k \
+          --split_ratio $split_ratio \
           --max_num_lbl_tok $max_num_lbl_tok >myout_${few_shot_setting}_${method}_${task_name}.file 2>&1 &
           wait
           done

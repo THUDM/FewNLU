@@ -12,13 +12,11 @@ save_dir=$YOUR_SAVE_DIR/${few_shot_setting}/${model_type}_${task_name}_${arch_me
 
 if [ $model_type = "albert" ]; then
   model_name_or_path="albert-xxlarge-v2"
-
   TRAIN_BATCH_SIZE_CANDIDATES="8"
-  LR_CANDIDATES="1e−5 2e-5"
+  LR_CANDIDATES="1e-5 2e-5"
 
 elif [ $model_type = "deberta" ]; then
   model_name_or_path="microsoft/deberta-v2-xxlarge"
-  
   TRAIN_BATCH_SIZE_CANDIDATES="2"
   LR_CANDIDATES="1e-5 5e-6"
 fi
@@ -110,11 +108,11 @@ do
             for prompt_encoder_head_type in $HEAD_TYPES
             do
 
-            if [ $LR == '5e-6' ]; then
+            if [ $LR = '5e-6' ]; then
               EMB_LR=1e-5
-            elif [ $LR == '1e-5' ]; then
+            elif [ $LR = '1e-5' ]; then
               EMB_LR=1e-4
-            elif [ $LR == '2e-5' ]; then
+            elif [ $LR = '2e-5' ]; then
               EMB_LR=1e-4
             else
               exit 1
@@ -124,7 +122,7 @@ do
             HYPER_PARAMS=${SEQ_LENGTH}_${MAX_STEP}_${TOTAL_TRAIN_BATCH}_${TRAIN_BATCH_SIZE}_${LR}_${PATTERN}_${every_eval_ratio}_${warmup_ratio}_${prompt_encoder_head_type}_${cv_k}
             OUTPUT_DIR=$save_dir/${HYPER_PARAMS}
 
-            CUDA_VISIBLE_DEVICES=$device nohup python3 cli.py \
+            CUDA_VISIBLE_DEVICES=$device python3 cli.py \
               --method $method \
               --arch_method $arch_method \
               --data_dir $DATA_DIR \
@@ -152,7 +150,7 @@ do
               --few_shot_setting $few_shot_setting \
               --every_eval_ratio $every_eval_ratio \
               --cv_k $cv_k \
-              --fix_deberta >myout_${few_shot_setting}_${method}_${task_name}.file 2>&1 &
+              --fix_deberta #>myout_${few_shot_setting}_${method}_${task_name}.file 2>&1 &
               wait
             done
           done

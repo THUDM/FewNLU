@@ -8,7 +8,7 @@ every_eval_ratio=$6
 arch_method=$7
 model_type=$8
 
-PATTERN_IDS=0
+PATTERN_IDS=1
 
 
 few_shot_setting="dev32_split"
@@ -135,7 +135,7 @@ CUDA_VISIBLE_DEVICES=$device python3 cli.py \
   --max_steps $MAX_STEP \
   --sampler_seed $SAMPLER_SEED \
   --seed $SEED \
-  --warmup_step_ratio $warmup_ratio \
+  --warmup_step_ratio $WARMUP_RATIO \
   --learning_rate $LR \
   --repetitions 3 \
   --embedding_learning_rate $EMB_LR \
