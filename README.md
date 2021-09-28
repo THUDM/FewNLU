@@ -1,6 +1,43 @@
-# FewNLU
+# FewNLU: Benchmarking State-of-the-Art Methods for Few-Shot Natural Language Understanding
 
 ## Introduction
+<<<<<<< HEAD
+Few-shot natural language understanding has attracted much recent attention. However, prior methods have been 
+evaluated under a diverse set of protocols, which hinders fair comparison and measuring progress of the field. It is 
+quested for a converged evaluation protocol as well as a general toolkit for few-shot NLU. 
+
+FewNLU is an integrated toolkit designed for few-shot natural language understanding (Few-Shot NLU).  
+It contains implementations of a number of state-of-the-art methods and data processing, a standard training 
+procedure and most importantly, a justified evaluation framework for few-shot NLU proposed in the [FewNLU paper](https://arxiv.org/abs/2109.12742).  FewNLU also allows customizing new tasks and methods, and performing training and evaluation over them. 
+The goal of FewNLU is to facilitate benchmarking few-shot NLU methods and to facilitate future research in related 
+field. Key features and capabilities of FewNLU include: 
+1. A justified evaluation framework with recommended data-split strategy for few-shot NLU.
+2. A collection of state-of-the-Art methods for few-shot NLU.
+3. Easy-to-Use customization of tasks and methods, which enables NLU to easily scale to a diverse range of future works.
+
+Related Resources: 
+1. Paper: [FewNLU: Benchmarking State-of-the-Art Methods for 
+Few-Shot Natural Language Understanding](https://arxiv.org/abs/2109.12742).
+   
+2. Leaderboard: [https://fewnlu.github.io](https://fewnlu.github.io).
+    
+3. A new version of FewGLUE dataset: [Download](https://cloud.tsinghua.edu.cn/f/03b187bf3fff4a5fb1d1/?dl=1) and 
+   [Homepage](https://paperswithcode.com/dataset/fewglue-64-labeled).
+   
+## Dataset
+
+#### Description
+We construct the [FewGLUE_64_labeled dataset](https://paperswithcode.com/dataset/fewglue-64-labeled), which is a new 
+version of [FewGLUE dataset](https://github.com/timoschick/fewglue). It contains a 64-sample training set, a 
+development set (the original SuperGLUE development set), a test set, and an unlabeled set. It is constructed to 
+facilitate the research of few-shot learning for natural language understanding tasks.
+
+Compared with the original FewGLUE dataset, it differs in the number of labeled data examples in the training set, 
+where the original FewGLUE has 32 trainining examples while FewGLUE_64_labeled has 64 labeled examples. Purposes for 
+constructing a new version of FewGLUE dataset include:
+
+1. To answer the questions that what is the best performance that few-shot learning can achieve and whether it is possible to further close the performance gap between few-shot learning and fully-supervised systems.
+=======
 
 The few-shot natural language understanding (NLU) task has attracted much recent attention. However, prior methods have been evaluated under a disparate set of protocols, which hinders fair comparison and measuring progress of the field. To address this issue, we introduce an evaluation framework that improves previous evaluation procedures in three key aspects, i.e., test performance, dev test correlation, and stability. Under this new evaluation framework, we re-evaluate several state-of-the-art few-shot methods for NLU tasks. Our framework reveals new insights: (1) both the absolute performance and relative gap of the methods were not accurately estimated in prior literature; (2) no single method dominates most tasks with consistent performance; (3) improvements of some methods diminish with a larger pretrained model; and (4) gains from different methods are often complementary and the best combined model performs close to a strong fully-supervised baseline. We open-source our toolkit, FewNLU, that implements our evaluation framework along with a number of state-of-the-art methods.
 
@@ -17,33 +54,72 @@ Few-Shot Natural Language Understanding](https://arxiv.org/abs/2109.12742).
 2. [FewNLU Leaderboard](https://fewnlu.github.io).
     
 3. [A 64-sample version FewGLUE dataset](https://cloud.tsinghua.edu.cn/f/3528a00629f8419ab9e2/?dl=1).
+>>>>>>> c0bbed92434c6cce89948e39b8b34030a44bb64e
+
+2. To explore to which degree the number of labeled training examples influences the few-shot performance.
+
+#### Acknowledgement
+Part of the FewGLUE_64_labeled dataset is based on the original 32-sample version of [FewGLUE](https://github.com/timoschick/fewglue). We collect them together in one package for the convenience of usage.
+We appreciate all the contributors who made their dataset public.
 
 
+## Leaderboard
 
-## Usage
+We build the [FewNLU leaderboard](https://fewnlu.github.io) to facilitate few-shot NLU research based on the proposed evaluation framework. The 
+proposed evaluation framework first compares all few-shot NLU methods on a common ground. The goal of the FewNLU leaderboard is to collect research works under the evaluation framework and to measure the true progress of the field constantly. We encourage researchers in this field to submit their own results obtained with FewNLU, with a link to the reproducible source codes attached.
 
-1. [Download](https://cloud.tsinghua.edu.cn/f/3528a00629f8419ab9e2/?dl=1) the either the original 32-sample version 
-   or 64-sample version SuperGLUE 
-   few-shot (also 
-   know as 
-   FewGLUE) data.
-Set `DATA_DIR` with your local data path. Besides, you may also change `SAVE_PATH` to your local path.
+
+## Toolkit
+
+#### Installation
+
+Clone this repo:
+```shell
+git clone https://github.com/THUDM/FewNLU
+cd FewNLU
+```
+
+To reproduce the exact results as is reported in the paper, please install exact the same version of dependencies by 
+running:
+```shell
+pip install -r requirements.txt
+```
+
+If you use FewNLU to perform multiple comparative experiments, 
+you are also supposed to keep exact the same environments as well as hardware devices of the same type.
+***Several interesting observations (Just FYI, and we will keep updating if got detailed explanations)***  are that:
+1. We perform the same experiments (SuperGLUE WSC task) respectively using one A100 GPU and one V100GPU, with the same code, hyper-params as well as exact the same dependencies,
+and results vary a lot.
+2. The version of Transformers(version 3.0.5 and version 4.5.1) affects differently on few-shot performance.
+3. The version of Pytorch CUDA (10.5 and 11.0) affects few-shot performance.
+
+
+#### Direct Usage of Provided Scripts
+1. Download either the original [32-sample version FewGLUE](https://github.com/timoschick/fewglue) dataset or our 
+   [64-sample version FewGLUE](https://paperswithcode.com/dataset/fewglue-64-labeled) dataset. Set `DATA_DIR` with 
+   your local data path. 
    
+2. Specify `SAVE_PATH` to your local path, indicating where to save model checkpoints.
    
-2. Run the following script (for example, pet method.)
+
+3. Run the following script (for example, run PET on the BoolQ task).
 ```
 bash scripts/search_pet_devsplit.sh <task_name> <gpu_id> <model_type>
 ```
-In the scripts, hyper-params to be considered for grid searching have been assigned appropriate search space.
+In the scripts, hyper-parameters to be considered for grid searching have been assigned appropriate search space.
 For other base models, methods or tasks, you should specify your own search space.
 
-Key arguments include:
+Other adjustable key arguments include:
 1. To choose among different few-shot methods, one should specify `--method`. Pre-defined methods include 
-   standard sequence classification, pet/ipet, ptuning, adapet.
+   standard sequence classification (`sequence_classifier`), pet (`pet`), ptuning (`ptuning`), adapet (`adapet`).
    You can also develop and customize your own new method by implementing a `Model` class. 
    Please refer to [Customizing your Own Methods](#Customizing your Own Methods) for more detailed instructions.
    
-2. To choose different tasks/datasets, one should specify `--dataset_name` (e.g., superglue) and `--task_name` (e.g., rte).
+2. To choose among different training paradigms, one should specify `--arch`. Pre-defined training paradigms include 
+   single-run paradigm (`default`), iPET (`ipet`) and Noisy Student (`noisy_student`)
+   
+3. To choose different tasks/datasets, one should specify `--dataset_name` (e.g., superglue) and `--task_name` (e.g.,
+   rte).
 You can also apply FewNLU to new NLU tasks. You can customize your own new tasks by 
    simply implementing a `DataProcessor` for loading data and a `PVP` for patternizing data inputs. 
    Please see [Customizing your Own Tasks](#Customizing your Own Tasks) for more detailed instructions.
@@ -53,10 +129,7 @@ You can also apply FewNLU to new NLU tasks. You can customize your own new tasks
    bidirectional language models (e.g., bert-based models) and unidirectional models (e.g., gpt-based models).
    
 
-
-   
-
-## Customizing your Own Tasks 
+#### Customizing your Own Tasks 
 
 To customize your own NLU tasks with FewNLU, you need to create your own dataset repository in [tasks](/tasks
 ), in which you define multiple tasks. For each task, you should implement a subclass of class `DataProcessor` in
@@ -68,7 +141,7 @@ To customize your own NLU tasks with FewNLU, you need to create your own dataset
  Here we take the MRPC task in [GLUE](/tasks/glue) dataset as an
   example. 
 
-### 1. Formalizing your Task with Patterns
+##### 1. Formalizing your Task with Patterns
 
 We first need to design different types of patterns for the MRPC task.
 The MRPC task is a paraphrase detection task, each data of which consists of two sentences and a label (`1` for
@@ -102,7 +175,7 @@ For the location of continuous prompt words to be inserted in, several practical
 * test
 * test
 
-### 2. Implement subclass of `PVP`
+##### 2. Implement subclass of `PVP`
 
 The function of class `PVP` is to formalize inputs into different patterns. For FewNLU three different types of
  formalization strategies are provided for selection, including standard fine-tuning patterns, manual discrete patterns
@@ -141,7 +214,7 @@ class MRPCPVP(PVP):
 Note that `shortenable()` is used to mark that the segments can be truncated when exceeding the maximum sequence
  length. For P-tuning patterns, an integer is used to denote the number of continuous prompt words to be inserted here.
 
-### 3. Implement subclass of `DataProcessor`
+##### 3. Implement subclass of `DataProcessor`
 
 The function of class `DataProcessor` is to provides methods for loading training, testing, development/dev32 and
  unlabeled examples for a given task.
@@ -165,7 +238,7 @@ def _create_examples(self, path: str, set_type: str) -> List[InputExample]:
  
 ```
 
-### 4. Register your own Dataset & Tasks
+##### 4. Register your own Dataset & Tasks
 
 After that, you should add dict-type variables `GLUE_METRICS` and `GLUE_PVPS` to [tasks/glue/pvp.py](tasks/glue/pvp
 .py), and `GLUEProcessors` to [tasks/glue/processors.py](tasks/glue/processors.py), as follows.
@@ -177,7 +250,7 @@ GLUE_PVPS = {"mrpc": MRPCPVP}
 GLUE_PROCESSORS = {"mrpc": MRPCProcessor}
 ```
 
-### 5. Run your own Experiments
+##### 5. Run your own Experiments
 
 To run experiments on your new tasks with existing methods, based on the given scripts, you should simply replace the
  arguments
@@ -187,28 +260,14 @@ To run experiments on your new tasks with existing methods, based on the given s
 
 
 
-  
+## Customizing your own Methods
 
-## Installation
+To customize your own methods with FewNLU, you first need to create your own method repository in [methods](methods
+). In sides the repository, you should define a model file, which implements the main parts of your new methods.
 
-Clone this repo
-```shell
-git clone https://github.com/THUDM/FewNLU
-cd FewNLU
-```
+[To-be-updated]
 
-To reproduce the exact results as is reported in our technical report paper (to be released soon), please install exact the same version of dependencies by running
-```shell
-pip install -r requirements.txt
-```
 
-If you use FewNLU to perform multiple comparative experiments, 
-you are also supposed to keep exact the same environments as well as hardware devices of the same type.
-***Several interesting observations (Just FYI, and we will keep updating if got detailed explanations)***  are that:
-1. We perform the same experiments (SuperGLUE WSC task) respectively using one A100 GPU and one V100GPU, with the same code, hyper-params as well as exact the same dependencies,
-and results vary a lot.
-2. The version of Transformers(version 3.0.5 and version 4.5.1) affects differently on few-shot performance.
-3. The version of Pytorch CUDA (10.5 and 11.0) affects few-shot performance.
 
 
 ## Acknowledgement
