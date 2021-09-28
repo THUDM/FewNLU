@@ -64,11 +64,11 @@ and results vary a lot.
 3. The version of Pytorch CUDA (10.5 and 11.0) affects few-shot performance.
 
 ### Direct Usage of Scripts
-1. Download either the original [32-sample version FewGLUE](https://github.com/timoschick/fewglue) dataset or our 
+- Step1: Download either the original [32-sample version FewGLUE](https://github.com/timoschick/fewglue) dataset or our 
    [64-sample version FewGLUE](https://paperswithcode.com/dataset/fewglue-64-labeled) dataset. Set `DATA_DIR` with 
    your local data path. 
-2. Specify `SAVE_PATH` to your local path, indicating where to save model checkpoints.
-3. Run the following script (for example, run PET on the BoolQ task).
+- Step2: Specify `SAVE_PATH` to your local path, indicating where to save model checkpoints.
+- Step3: Run the following script (for example, run PET on the BoolQ task).
 ```
 bash scripts/search_pet_devsplit.sh <task_name> <gpu_id> <model_type>
 ```
@@ -102,7 +102,7 @@ To customize your own NLU tasks with FewNLU, you need to create your own dataset
  Here we take the MRPC task in [GLUE](/tasks/glue) dataset as an
   example. 
 
-#### 1. Formalizing your Task with Patterns
+#### Step 1. Formalizing your Task with Patterns
 We first need to design different types of patterns for the MRPC task.
 The MRPC task is a paraphrase detection task, each data of which consists of two sentences and a label (`1` for
  paraphrases while `0` for non-paraphrases)
@@ -129,7 +129,7 @@ Based on the designed manual discrete prompt, we insert several continuous promp
 Does "[sentence1]" has the same meaning with "[sentence2]"? [cont_prompt_word] [MASK].
 ```
 
-#### 2. Implement subclass of `PVP`
+#### Step 2. Implement subclass of `PVP`
 The function of class `PVP` is to formalize inputs into different patterns. For FewNLU three different types of
  formalization strategies are provided for selection, including standard fine-tuning patterns, manual discrete patterns
   and
@@ -167,7 +167,7 @@ class MRPCPVP(PVP):
 Note that `shortenable()` is used to mark that the segments can be truncated when exceeding the maximum sequence
  length. For P-tuning patterns, an integer is used to denote the number of continuous prompt words to be inserted here.
 
-#### 3. Implement subclass of `DataProcessor`
+#### Step 3. Implement subclass of `DataProcessor`
 The function of class `DataProcessor` is to provides methods for loading training, testing, development/dev32 and
  unlabeled examples for a given task.
  
@@ -186,7 +186,7 @@ def _create_examples(self, path: str, set_type: str) -> List[InputExample]:
         return examples
 ```
 
-#### 4. Register your own Dataset & Tasks
+#### Step 4. Register your own Dataset & Tasks
 After that, you should add dict-type variables `GLUE_METRICS` and `GLUE_PVPS` to [tasks/glue/pvp.py](tasks/glue/pvp
 .py), and `GLUEProcessors` to [tasks/glue/processors.py](tasks/glue/processors.py), as follows.
 ```
@@ -195,7 +195,7 @@ GLUE_PVPS = {"mrpc": MRPCPVP}
 GLUE_PROCESSORS = {"mrpc": MRPCProcessor}
 ```
 
-#### 5. Run your own Experiments
+#### Step 5. Run your own Experiments
 To run experiments on your new tasks with existing methods, based on the given scripts, you should simply replace the
  arguments
  `--dataset` and
@@ -211,7 +211,18 @@ To customize your own methods with FewNLU, you first need to create your own met
 [To-be-updated]
 
 
-
+## Citation
+Please cite the paper if FewNLU is useful in your work:
+```Bash
+@misc{zheng2021fewnlu,
+      title={FewNLU: Benchmarking State-of-the-Art Methods for Few-Shot Natural Language Understanding}, 
+      author={Yanan Zheng and Jing Zhou and Yujie Qian and Ming Ding and Jian Li and Ruslan Salakhutdinov and Jie Tang and Sebastian Ruder and Zhilin Yang},
+      year={2021},
+      eprint={2109.12742},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
 
 ## Acknowledgement
 Part of the code is based on [PET](https://github.com/timoschick/pet).
