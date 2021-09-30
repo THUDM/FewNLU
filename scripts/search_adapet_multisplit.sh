@@ -148,6 +148,7 @@ do
           --every_eval_ratio $every_eval_ratio \
           --cv_k $cv_k \
           --split_ratio $split_ratio \
+          --fix_deberta \
           --max_num_lbl_tok $max_num_lbl_tok >myout_${few_shot_setting}_${method}_${task_name}.file 2>&1 &
           wait
           done
