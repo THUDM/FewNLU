@@ -352,9 +352,9 @@ def run(dataprovider, eval_data, wrapper_config, train_eval_config, output_dir=N
                     with open(os.path.join(pattern_iter_output_dir, 'results.txt'), 'w') as fh:
                         fh.write(str(results_dict))
 
-                    if train_eval_config.few_shot_setting == "fix_setting"  or train_eval_config.every_eval_ratio==1:
-                        logger.info("Saving trained model at {} for fix-setting.".format(pattern_iter_output_dir))
-                        wrapper.save(pattern_iter_output_dir)
+                    # if train_eval_config.few_shot_setting == "fix_setting"  or train_eval_config.every_eval_ratio==1:
+                    #     logger.info("Saving trained model at {} for fix-setting.".format(pattern_iter_output_dir))
+                    #     wrapper.save(pattern_iter_output_dir)
 
                     train_eval_config.save(os.path.join(pattern_iter_output_dir, TRAIN_EVAL_CONFIG_NAME))
                     logger.info("Saving complete")
@@ -508,9 +508,9 @@ def main():
     logger.info('train_data: {}, eval_data: {}'.format(len(train_data),len(eval_data)))
 
     start_time = time.time()
-    # prepare train_data and dev32_data
-    # train_datas,dev32_datas=prepare_splited_data(args,train_data,dev32_data)
     dataprovider=DataProvider(args,train_data) #,dev32_data)
+    # import pdb 
+    # pdb.set_trace()
     # x1,y1=dataprovider.get_splited_data(0)
     # x2,y2=dataprovider.get_splited_data(1)
     # x3,y3=dataprovider.get_splited_data(2)
