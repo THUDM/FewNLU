@@ -497,7 +497,8 @@ class TransformerModelWrapper:
                 train_iterator.close()
                 break
 
-        if few_shot_setting == "fix_setting"  or every_eval_ratio==1:
+        if every_eval_step==0 or few_shot_setting == "fix_setting"  or every_eval_ratio==1:
+            self.save(pattern_iter_output_dir)
             return global_step, (tr_loss / global_step if global_step > 0 else -1)
         else:
             return best_global_step, (best_tr_loss / best_global_step if best_global_step > 0 else -1)
