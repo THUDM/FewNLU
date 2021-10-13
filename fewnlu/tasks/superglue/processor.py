@@ -210,7 +210,9 @@ class WscProcessor(SuperGLUEDataProcessor):
                     examples.append(example_true)
                     examples.append(example_false)
                 else:
-                    text_a,label,meta=process_wsc(example_json['target'],example_json['text'])
+                    target=example_json['target']
+                    if 'label' in example_json: target['label']=example_json['label']
+                    text_a,label,meta=process_wsc(target,example_json['text'])
                     example = InputExample(guid=guid, text_a=text_a, label=label, meta=meta, idx=idx)
                     examples.append(example)
             return examples
