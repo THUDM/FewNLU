@@ -536,6 +536,9 @@ def main():
         result_file_name = "save_detail" + args.arch_method +"_"+ args.task_name \
                     + "_" + args.few_shot_setting + "_" + args.method + "_" \
                     +args.model_type + ".txt"
+    if not os.path.exists("final_results"):
+        os.makedirs("final_results")
+        logger.info("Creating final_results.")
     with open(os.path.join("final_results", result_file_name), "a+") as f:
         if args.task_name in ["boolq", "rte", "wic", "wsc", "copa"]:
             if 'dev32' in results and results['dev32'] is not None:
